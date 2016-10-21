@@ -120,6 +120,27 @@ func TestBuffer_ManySmall(t *testing.T) {
 	}
 }
 
+func TestBufferByte_ManySmall(t *testing.T) {
+	inp := []byte("hello world")
+
+	buf, err := NewBuffer(3)
+	if err != nil {
+		t.Fatalf("err: %v", err)
+	}
+
+	for _, b := range inp {
+		err := buf.WriteByte(b)
+		if err != nil {
+			t.Fatalf("err: %v", err)
+		}
+	}
+
+	expect := []byte("rld")
+	if !bytes.Equal(buf.Bytes(), expect) {
+		t.Fatalf("bad: %v", buf.String())
+	}
+}
+
 func TestBuffer_MultiPart(t *testing.T) {
 	inputs := [][]byte{
 		[]byte("hello world\n"),

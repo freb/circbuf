@@ -54,6 +54,20 @@ func (b *Buffer) Write(buf []byte) (int, error) {
 	return n, nil
 }
 
+// WriteByte writes the byte c to the buffer, overriding
+// older data if necessary.
+func (b *Buffer) WriteByte(c byte) error {
+	// Account for total bytes written
+	b.written += 1
+
+	// Update byte
+	b.data[b.writeCursor] = c
+
+	// Update location of the cursor
+	b.writeCursor = ((b.writeCursor + 1) % b.size)
+	return nil
+}
+
 // Size returns the size of the buffer
 func (b *Buffer) Size() int64 {
 	return b.size
